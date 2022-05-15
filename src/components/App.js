@@ -11,18 +11,36 @@ console.log({ CATEGORIES, TASKS });
 
 function App() {
   const [taskList, setTasklist] = useState(TASKS)
+  const [category, setCategory] = useState("All")
+
+  function addTask(formData){
+    console.log('formData', formData)
+    debugger
+    setTasklist([...taskList, formData])
+  }
 
   function handleDeleteTask(deleteTask){
     setTasklist(taskList.filter((task)=> task.text !== deleteTask))
 
   }
 
+
+  function handleFilter() {
+    return taskList.filter((task) => category === "All" || task.category === category) //rview this further
+    //the boolean argument is asking is it true or fale, and everything else falls under that umbrella.  
+  }
+
+  function onTaskFormSubmit(){
+
+
+  }
+
   return (
     <div className="App">
       <h2>My tasks</h2>
-      <CategoryFilter />
-      <NewTaskForm />
-      <TaskList tasks={taskList} handleDeleteTask={handleDeleteTask}/>
+      <CategoryFilter categories={CATEGORIES} handleFilter={setCategory} selectedCategory = {category}/>
+      <NewTaskForm categories={CATEGORIES} onTaskFormSubmit={addTask}/>
+      <TaskList tasks={handleFilter()} handleDeleteTask={handleDeleteTask}/>
     </div>
   );
 }
